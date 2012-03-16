@@ -6,6 +6,8 @@ module Fluidruby
     env.instance_eval &machine_definition
     module_eval do
       define_method(:states) { env.states }
+      define_method(:initial_state) { env.initial_state }
+      define_method(:state) { env.current_state }
     end
   end
 end

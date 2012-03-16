@@ -6,7 +6,7 @@ describe Fluidruby do
       extend Fluidruby
 
       state_machine do
-        state :unread
+        state :unread, :initial
         state :read
         state :closed
       end
@@ -16,6 +16,11 @@ describe Fluidruby do
 
     it 'defines states' do
       door.states.should =~ [:unread, :read, :closed]
+    end
+
+    it 'has an initial state' do
+      door.initial_state.should == :unread
+      door.state.should == :unread
     end
   end
 end
