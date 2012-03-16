@@ -5,9 +5,11 @@ describe Fluidruby do
     class Door
       extend Fluidruby
 
-      state :unread
-      state :read
-      state :closed
+      state_machine do
+        state :unread
+        state :read
+        state :closed
+      end
     end
 
     let(:door) { Door.new }
