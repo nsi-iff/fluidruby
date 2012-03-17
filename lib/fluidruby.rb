@@ -8,7 +8,9 @@ module Fluidruby
       define_method(:states) { env.states }
       define_method(:initial_state) { env.initial_state }
       define_method(:state) { env.current_state }
-      env.events.each {|event| define_method event }
+      env.events.each do |event|
+        define_method(event) { env.event(event) }
+      end
     end
   end
 end

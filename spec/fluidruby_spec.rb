@@ -32,6 +32,12 @@ describe Fluidruby do
     it 'creates a method with the same name' do
       [:open, :close, :break].each {|event| door.should respond_to event }
     end
+
+    it 'change the state when an event is trigger' do
+      door.state.should == :closed
+      door.open
+      door.state.should == :open
+    end
   end
 end
 

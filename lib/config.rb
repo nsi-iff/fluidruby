@@ -17,5 +17,11 @@ module FluidrubyConfig
     def events
       @transitions.keys
     end
+
+    def event(event_name)
+      if @current_state == @transitions[event_name][:transit_from]
+        @current_state = @transitions[event_name][:to]
+      end
+    end
   end
 end
