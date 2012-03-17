@@ -9,6 +9,13 @@ module FluidrubyConfig
         @current_state = name
       end
     end
+
+    def on(event, options)
+      (@transitions ||= {})[event] = options
+    end
+
+    def events
+      @transitions.keys
+    end
   end
 end
-
