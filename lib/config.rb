@@ -1,5 +1,5 @@
 module FluidrubyConfig
-  class Environment < BasicObject
+    class Environment
     attr_reader :states, :initial_state, :current_state
 
     def state(name, initial = nil)
@@ -21,7 +21,12 @@ module FluidrubyConfig
     def event(event_name)
       if @current_state == @transitions[event_name][:transit_from]
         @current_state = @transitions[event_name][:to]
+      else
+        raise InvalidTransition,
+          "Cannot transit from #{@current_state} to #{@transitions[event_name][:to]}"
       end
     end
   end
+
+  class InvalidTransition < Exception; end
 end

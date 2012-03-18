@@ -37,6 +37,12 @@ describe Fluidruby do
       door.state.should == :closed
       door.open
       door.state.should == :open
+      door.close
+      door.state.should == :closed
+    end
+
+    it 'raises exception when transtion is invalid' do
+      lambda { door.close }.should raise_error FluidrubyConfig::InvalidTransition, 'Cannot transit from closed to closed'
     end
   end
 end
