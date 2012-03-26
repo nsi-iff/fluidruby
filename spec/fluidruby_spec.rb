@@ -15,6 +15,20 @@ describe Fluidruby do
     end
   end
 
+  class ProcessMachine
+    extend Fluidruby
+
+    state_machine do
+      state :created, :initial
+      state :waiting
+      state :processed
+
+      on :queue, transit_from: :created, to: :waiting
+      on :process, transit_from: :waiting, to: :processed
+      on :cancel, transit_from: [:waiting, :created], to: :canceled
+    end
+  end
+
   let(:door) { Door.new }
 
   context 'state' do
@@ -43,6 +57,20 @@ describe Fluidruby do
 
     it 'raises exception when transtion is invalid' do
       lambda { door.close }.should raise_error FluidrubyConfig::InvalidTransition, 'Cannot transit from closed to closed'
+    end
+
+    it 'accepts multiple origin states' do
+      process = ProcessMachine.new
+      expect { process.cancel }.to_not raise_error
+
+      process = ProcessMachine.new
+      process.queue
+      expect { process.cancel }.to_not raise_error
+
+      process = ProcessMachine.new
+      process.queue
+      process.process
+      expect { process.cancel }.to raise_error FluidrubyConfig::InvalidTransition
     end
   end
 end
