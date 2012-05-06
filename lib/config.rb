@@ -2,8 +2,13 @@ module FluidrubyConfig
     class Environment
     attr_reader :states, :initial_state, :current_state
 
+    def initialize
+      @states = []
+      @transitions = {}
+    end
+
     def state(name, initial = nil)
-      (@states ||= []) << name
+      @states << name
       if initial
         @initial_state = name
         @current_state = name
@@ -11,7 +16,7 @@ module FluidrubyConfig
     end
 
     def on(event, options)
-      (@transitions ||= {})[event] = options
+      @transitions[event] = options
     end
 
     def events
