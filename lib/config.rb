@@ -5,13 +5,19 @@ module FluidrubyConfig
     def initialize
       @states = []
       @transitions = {}
+      @initial_state = nil
     end
 
     def state(name, initial = nil)
       @states << name
       if initial
-        @initial_state = name
-        @current_state = name
+        if @initial_state
+          raise InitialStateAlreadyExist,
+            "You have already given an inital state"
+        else
+          @initial_state = name
+          @current_state = name
+        end
       end
     end
 
@@ -34,4 +40,6 @@ module FluidrubyConfig
   end
 
   class InvalidTransition < Exception; end
+
+  class InitialStateAlreadyExist < Exception; end
 end

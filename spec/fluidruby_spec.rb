@@ -16,8 +16,23 @@ describe Fluidruby do
   end
 
   let(:door) { Door.new }
+  let(:window) do
+    class Window
+      extend Fluidruby
+
+      state_machine do
+        state :closed, :inital
+        state :open, :initial
+      end
+    end
+  end
 
   context 'state' do
+
+    it "can't give more than one initial state" do
+      lambda { window }.should raise_error FluidrubyConfig::InitialStateAlreadyExist
+    end
+
     it 'defines states' do
       door.states.should =~ [:closed, :open, :broken]
     end
